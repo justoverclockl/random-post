@@ -1,0 +1,58 @@
+{
+    "name": "justoverclock/random-post",
+    "description": "Get Random Post from specific Tag",
+    "keywords": [
+        "random post"
+    ],
+    "type": "flarum-extension",
+    "license": "MIT",
+    "require": {
+        "flarum/core": "^1.2.0",
+        "afrux/forum-widgets-core": "^0.1.0",
+        "flarum/tags": "^1.0.3"
+    },
+    "authors": [
+        {
+            "name": "Marco Colia",
+            "email": "info@flarum.it",
+            "role": "Developer",
+            "homepage": "https://flarum.it"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Justoverclock\\RandomPost\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Random Post",
+            "category": "features",
+            "icon": {
+                "name": "far fa-comment-dots",
+                "color": "blue",
+                "backgroundColor": "white"
+            }
+        },
+        "flarum-cli": {
+            "modules": {
+                "admin": true,
+                "forum": true,
+                "js": true,
+                "jsCommon": false,
+                "css": true,
+                "locale": true,
+                "gitConf": true,
+                "githubActions": false,
+                "prettier": true,
+                "typescript": false,
+                "bundlewatch": true,
+                "backendTesting": false,
+                "editorConfig": true,
+                "styleci": true
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
