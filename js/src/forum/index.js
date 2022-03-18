@@ -7,6 +7,8 @@ app.initializers.add('justoverclock/random-post', () => {
 extend(DiscussionList.prototype, 'oncreate', function () {
     if (app.current.matches(IndexPage)) {
 
+      const charLim = app.forum.attribute('justoverclock-random-post.charLimitRandomPost') || 280;
+
       app.store
         .find('posts', {
           include: 'discussion,user',
@@ -16,7 +18,7 @@ extend(DiscussionList.prototype, 'oncreate', function () {
           this.randomPost = results[Math.floor(Math.random() * results.length)];
 
           const randomPostTitle = document.getElementById('random-post-text');
-          randomPostTitle.innerHTML = this.randomPost.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, 280);
+          randomPostTitle.innerHTML = this.randomPost.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, charLim);
 
           const randomAuthor = document.getElementById('random-post-author');
           const link = app.route.user(this.randomPost.user());
@@ -46,6 +48,9 @@ extend(DiscussionList.prototype, 'oncreate', function () {
   });
   extend(DiscussionList.prototype, 'oncreate', function () {
     if (app.current.matches(IndexPage)) {
+
+      const charLim = app.forum.attribute('justoverclock-random-post.charLimitRandomPost') || 280;
+
       app.store
         .find('posts', {
           include: 'discussion,user',
@@ -56,7 +61,7 @@ extend(DiscussionList.prototype, 'oncreate', function () {
 
 
           const randomPostTitle = document.getElementById('random-post-text-two');
-          randomPostTitle.innerHTML = this.randomPost.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, 280);
+          randomPostTitle.innerHTML = this.randomPost.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, charLim);
 
           const randomAuthor = document.getElementById('random-post-author-two');
           const link = app.route.user(this.randomPost.user());
@@ -86,6 +91,9 @@ extend(DiscussionList.prototype, 'oncreate', function () {
   });
   extend(DiscussionList.prototype, 'oncreate', function () {
     if (app.current.matches(IndexPage)) {
+
+      const charLim = app.forum.attribute('justoverclock-random-post.charLimitRandomPost') || 280;
+
       app.store
         .find('posts', {
           include: 'discussion,user',
@@ -95,7 +103,7 @@ extend(DiscussionList.prototype, 'oncreate', function () {
           this.randomPost = results[Math.floor(Math.random() * results.length)];
 
           const randomPostTitle = document.getElementById('random-post-text-three');
-          randomPostTitle.innerHTML = this.randomPost.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, 280);
+          randomPostTitle.innerHTML = this.randomPost.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, charLim);
 
           const randomAuthor = document.getElementById('random-post-author-three');
           const link = app.route.user(this.randomPost.user());
@@ -125,6 +133,9 @@ extend(DiscussionList.prototype, 'oncreate', function () {
   });
   extend(DiscussionList.prototype, 'oncreate', function () {
     if (app.current.matches(IndexPage)) {
+
+      const charLim = app.forum.attribute('justoverclock-random-post.charLimitRandomPost') || 280;
+
       app.store
         .find('posts', {
           include: 'discussion,user',
@@ -134,7 +145,7 @@ extend(DiscussionList.prototype, 'oncreate', function () {
           this.randomPost = results[Math.floor(Math.random() * results.length)];
 
           const randomPostTitle = document.getElementById('random-post-text-four');
-          randomPostTitle.innerHTML = this.randomPost.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, 280);
+          randomPostTitle.innerHTML = this.randomPost.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, charLim);
 
           const randomAuthor = document.getElementById('random-post-author-four');
           const link = app.route.user(this.randomPost.user());
@@ -164,6 +175,9 @@ extend(DiscussionList.prototype, 'oncreate', function () {
   });
   extend(DiscussionList.prototype, 'oncreate', function () {
     if (app.current.matches(IndexPage)) {
+
+      const charLim = app.forum.attribute('justoverclock-random-post.charLimitRandomPost') || 280;
+
       app.store
         .find('posts', {
           include: 'discussion,user',
@@ -173,7 +187,7 @@ extend(DiscussionList.prototype, 'oncreate', function () {
           this.randomPost = results[Math.floor(Math.random() * results.length)];
 
           const randomPostTitle = document.getElementById('random-post-text-five');
-          randomPostTitle.innerHTML = this.randomPost.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, 280);
+          randomPostTitle.innerHTML = this.randomPost.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, charLim);
 
           const randomAuthor = document.getElementById('random-post-author-five');
           const link = app.route.user(this.randomPost.user());
