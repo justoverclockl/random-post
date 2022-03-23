@@ -1,51 +1,71 @@
 import app from 'flarum/forum/app';
 import DiscussionList from 'flarum/forum/components/DiscussionList';
 import {extend} from 'flarum/common/extend';
-import IndexPage from "flarum/forum/components/IndexPage";
+import DiscussionListItem from "flarum/forum/components/DiscussionListItem";
+
 
 app.initializers.add('justoverclock/random-post', () => {
+  extend(DiscussionList.prototype, 'oninit', function (){
+    app.store
+      .find('posts', {
+        include: 'discussion,user',
+      })
+      .then((results) => {
+        this.randomPostOne = results[Math.floor(Math.random() * results.length)];
+        this.randomPostTwo = results[Math.floor(Math.random() * results.length)];
+        console.log(this.randomPostOne)
+        console.log(this.randomPostTwo)
 
-  extend(DiscussionList.prototype, 'oncreate', function () {
-    if (app.current.matches(IndexPage)) {
+      })
+  })
+  extend(DiscussionList.prototype, 'view', function (vdom) {
 
-      const charLim = app.forum.attribute('justoverclock-random-post.charLimitRandomPost') || 280;
 
-      app.store
-        .find('posts', {
-          include: 'discussion,user',
-        })
-        .then((results) => {
 
-          this.randomPost = results[Math.floor(Math.random() * results.length)];
+    vdom.children.forEach(vdom => {
 
-          const randomPostTitle = document.getElementById('random-post-text');
-          randomPostTitle.innerHTML = this.randomPost.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, charLim);
+      // Find the child with class .DiscussionList-discussions
+      if (!vdom || !vdom.attrs || vdom.attrs.className !== 'DiscussionList-discussions') {
+        return;
+      }
 
-          const randomAuthor = document.getElementById('random-post-author');
-          const link = app.route.user(this.randomPost.user());
-          const user = this.randomPost.user().displayName();
-          const discussion = this.randomPost.discussion().data.attributes.title;
-          const discussionLink = app.route.discussion(this.randomPost.discussion());
-          randomAuthor.innerHTML = `<a href=${link}>${user}</a> in the <a href=${discussionLink}>${discussion}</a> `;
+      let discussionIndex = 0;
+
+      vdom.children.forEach(mapGroup => {
+
+
+        // All children should be Mithril virtual group nodes "[" but we'll make sure no `null` or `undefined` got in here
+        if (!mapGroup || !mapGroup.children) {
+          return;
+        }
+
+        // Clone array so inserting new items into the original array doesn't cause the loop to skip items
+        [...mapGroup.children].forEach((li) => {
+          // Verify each child is an li containing a DiscussionListItem, this way we are not counting items added by other extensions
+          if (li.tag !== 'li' || !li.children || !li.children.length || !li.children[0] || li.children[0].tag !== DiscussionListItem) {
+            return;
+          }
+
+          // Add index to the DOM so it can be used from CSS
+          li.attrs['data-index'] = discussionIndex;
+
+          // Add content above each group of 3 discussions
+          if (discussionIndex === 1) {
+              // Use indexOf() to get the up to date index of the current element, since adding items will shift the index of next items
+              mapGroup.children.splice(mapGroup.children.indexOf(li), 0,
+                <div>{this.randomPostOne && this.randomPostOne.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, 200)}</div>);
+          } else if (discussionIndex === 10){
+            mapGroup.children.splice(mapGroup.children.indexOf(li), 0,
+              <div>{this.randomPostOne && this.randomPostOne.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, 200)}</div>);
+          } else if (discussionIndex === 19) {
+            mapGroup.children.splice(mapGroup.children.indexOf(li), 0,
+              <div>{this.randomPostOne && this.randomPostOne.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, 200)}</div>);
+          }
+
+          discussionIndex++;
         });
-
-      window.addEventListener('DOMContentLoaded', (event) => {
-        const elements = document.querySelectorAll('.DiscussionListItem');
-        const firstEl = elements.item(0); //
-        console.log(firstEl);
-
-        const newEl = document.createElement('div');
-        newEl.innerHTML =
-          '<div id="random-post-one"><div class="random-post-content">\n' +
-          '        <p class="random-post-text" id="random-post-text"></p>\n' +
-          '        <div class="random-post-info">\n' +
-          '           <div class="random-post-author" id="random-post-author">\n' +
-          '        </div>\n' +
-          '      </div>' +
-          '</div>';
-        firstEl.appendChild(newEl);
       });
-    }
+    });
   });
 });
 

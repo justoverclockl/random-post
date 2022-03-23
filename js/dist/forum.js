@@ -16,44 +16,64 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_forum_components_DiscussionList__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_components_DiscussionList__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var flarum_common_extend__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/common/extend */ "flarum/common/extend");
 /* harmony import */ var flarum_common_extend__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_common_extend__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var flarum_forum_components_IndexPage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flarum/forum/components/IndexPage */ "flarum/forum/components/IndexPage");
-/* harmony import */ var flarum_forum_components_IndexPage__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_components_IndexPage__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var flarum_forum_components_DiscussionListItem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flarum/forum/components/DiscussionListItem */ "flarum/forum/components/DiscussionListItem");
+/* harmony import */ var flarum_forum_components_DiscussionListItem__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_components_DiscussionListItem__WEBPACK_IMPORTED_MODULE_3__);
 
 
 
 
 flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('justoverclock/random-post', function () {
-  (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_2__.extend)((flarum_forum_components_DiscussionList__WEBPACK_IMPORTED_MODULE_1___default().prototype), 'oncreate', function () {
+  (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_2__.extend)((flarum_forum_components_DiscussionList__WEBPACK_IMPORTED_MODULE_1___default().prototype), 'oninit', function () {
     var _this = this;
 
-    if (flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().current.matches((flarum_forum_components_IndexPage__WEBPACK_IMPORTED_MODULE_3___default()))) {
-      var charLim = flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().forum.attribute('justoverclock-random-post.charLimitRandomPost') || 280;
-      flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().store.find('posts', {
-        include: 'discussion,user'
-      }).then(function (results) {
-        _this.randomPost = results[Math.floor(Math.random() * results.length)];
-        var randomPostTitle = document.getElementById('random-post-text');
-        randomPostTitle.innerHTML = _this.randomPost.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, charLim);
-        var randomAuthor = document.getElementById('random-post-author');
-        var link = flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().route.user(_this.randomPost.user());
+    flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().store.find('posts', {
+      include: 'discussion,user'
+    }).then(function (results) {
+      _this.randomPostOne = results[Math.floor(Math.random() * results.length)];
+      _this.randomPostTwo = results[Math.floor(Math.random() * results.length)];
+      console.log(_this.randomPostOne);
+      console.log(_this.randomPostTwo);
+    });
+  });
+  (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_2__.extend)((flarum_forum_components_DiscussionList__WEBPACK_IMPORTED_MODULE_1___default().prototype), 'view', function (vdom) {
+    var _this2 = this;
 
-        var user = _this.randomPost.user().displayName();
+    vdom.children.forEach(function (vdom) {
+      // Find the child with class .DiscussionList-discussions
+      if (!vdom || !vdom.attrs || vdom.attrs.className !== 'DiscussionList-discussions') {
+        return;
+      }
 
-        var discussion = _this.randomPost.discussion().data.attributes.title;
+      var discussionIndex = 0;
+      vdom.children.forEach(function (mapGroup) {
+        // All children should be Mithril virtual group nodes "[" but we'll make sure no `null` or `undefined` got in here
+        if (!mapGroup || !mapGroup.children) {
+          return;
+        } // Clone array so inserting new items into the original array doesn't cause the loop to skip items
 
-        var discussionLink = flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().route.discussion(_this.randomPost.discussion());
-        randomAuthor.innerHTML = "<a href=" + link + ">" + user + "</a> in the <a href=" + discussionLink + ">" + discussion + "</a> ";
+
+        [].concat(mapGroup.children).forEach(function (li) {
+          // Verify each child is an li containing a DiscussionListItem, this way we are not counting items added by other extensions
+          if (li.tag !== 'li' || !li.children || !li.children.length || !li.children[0] || li.children[0].tag !== (flarum_forum_components_DiscussionListItem__WEBPACK_IMPORTED_MODULE_3___default())) {
+            return;
+          } // Add index to the DOM so it can be used from CSS
+
+
+          li.attrs['data-index'] = discussionIndex; // Add content above each group of 3 discussions
+
+          if (discussionIndex === 1) {
+            // Use indexOf() to get the up to date index of the current element, since adding items will shift the index of next items
+            mapGroup.children.splice(mapGroup.children.indexOf(li), 0, m("div", null, _this2.randomPostOne && _this2.randomPostOne.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, 200)));
+          } else if (discussionIndex === 10) {
+            mapGroup.children.splice(mapGroup.children.indexOf(li), 0, m("div", null, _this2.randomPostOne && _this2.randomPostOne.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, 200)));
+          } else if (discussionIndex === 19) {
+            mapGroup.children.splice(mapGroup.children.indexOf(li), 0, m("div", null, _this2.randomPostOne && _this2.randomPostOne.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, 200)));
+          }
+
+          discussionIndex++;
+        });
       });
-      window.addEventListener('DOMContentLoaded', function (event) {
-        var elements = document.querySelectorAll('.DiscussionListItem');
-        var firstEl = elements.item(0); //
-
-        console.log(firstEl);
-        var newEl = document.createElement('div');
-        newEl.innerHTML = '<div id="random-post-one"><div class="random-post-content">\n' + '        <p class="random-post-text" id="random-post-text"></p>\n' + '        <div class="random-post-info">\n' + '           <div class="random-post-author" id="random-post-author">\n' + '        </div>\n' + '      </div>' + '</div>';
-        firstEl.appendChild(newEl);
-      });
-    }
+    });
   });
 });
 
@@ -92,14 +112,14 @@ module.exports = flarum.core.compat['forum/components/DiscussionList'];
 
 /***/ }),
 
-/***/ "flarum/forum/components/IndexPage":
-/*!*******************************************************************!*\
-  !*** external "flarum.core.compat['forum/components/IndexPage']" ***!
-  \*******************************************************************/
+/***/ "flarum/forum/components/DiscussionListItem":
+/*!****************************************************************************!*\
+  !*** external "flarum.core.compat['forum/components/DiscussionListItem']" ***!
+  \****************************************************************************/
 /***/ ((module) => {
 
 "use strict";
-module.exports = flarum.core.compat['forum/components/IndexPage'];
+module.exports = flarum.core.compat['forum/components/DiscussionListItem'];
 
 /***/ })
 
