@@ -19,6 +19,7 @@ app.initializers.add('justoverclock/random-post', () => {
   })
   extend(DiscussionList.prototype, 'view', function (vdom) {
 
+    const charLim = app.forum.attribute('justoverclock-random-post.charLimitRandomPost') || 200;
 
     if (app.current.matches(IndexPage)) {
       m.redraw()
@@ -61,13 +62,14 @@ app.initializers.add('justoverclock/random-post', () => {
               <div id="random-post-one">
                 <div className="random-post-content">
                   <p className="random-post-text" id="random-post-text">
-                    {this.randomPostOne && this.randomPostOne.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, 200)}
+                    {this.randomPostOne && this.randomPostOne.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, charLim)}
                   </p>
                   <div className="random-post-info">
                     <div className="random-post-author" id="random-post-author">
                       <a
-                        href={this.randomPostOne && 'u/' + this.randomPostOne.user().data.attributes.slug}>{this.randomPostOne && this.randomPostOne.user().displayName()}</a> in
-                      the <a href={this.randomPostOne && 'd/' + this.randomPostOne.discussion().data.attributes.slug}>
+                        href={this.randomPostOne && 'u/' + this.randomPostOne.user().data.attributes.slug}>{this.randomPostOne && this.randomPostOne.user().displayName()}</a>
+                      {app.translator.trans('justoverclock-random-post.forum.inThe')}
+                      <a href={this.randomPostOne && 'd/' + this.randomPostOne.discussion().data.attributes.slug}>
                       {this.randomPostOne && this.randomPostOne.discussion().data.attributes.title}</a>
                     </div>
                   </div>
@@ -78,13 +80,14 @@ app.initializers.add('justoverclock/random-post', () => {
               <div id="random-post-one">
                 <div className="random-post-content">
                   <p className="random-post-text" id="random-post-text">
-                    {this.randomPostTwo && this.randomPostTwo.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, 200)}
+                    {this.randomPostTwo && this.randomPostTwo.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, charLim)}
                   </p>
                   <div className="random-post-info">
                     <div className="random-post-author" id="random-post-author">
                       <a
-                        href={this.randomPostTwo && 'u/' + this.randomPostTwo.user().data.attributes.slug}>{this.randomPostTwo && this.randomPostTwo.user().displayName()}</a> in
-                      the <a href={this.randomPostTwo && 'd/' + this.randomPostTwo.discussion().data.attributes.slug}>
+                        href={this.randomPostTwo && 'u/' + this.randomPostTwo.user().data.attributes.slug}>{this.randomPostTwo && this.randomPostTwo.user().displayName()}</a>
+                      {app.translator.trans('justoverclock-random-post.forum.inThe')}
+                      <a href={this.randomPostTwo && 'd/' + this.randomPostTwo.discussion().data.attributes.slug}>
                       {this.randomPostTwo && this.randomPostTwo.discussion().data.attributes.title}</a>
                     </div>
                   </div>
@@ -95,13 +98,14 @@ app.initializers.add('justoverclock/random-post', () => {
               <div id="random-post-one">
                 <div className="random-post-content">
                   <p className="random-post-text" id="random-post-text">
-                    {this.randomPostTree && this.randomPostTree.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, 200)}
+                    {this.randomPostTree && this.randomPostTree.data.attributes.contentHtml.replace(/<\/?[^>]+(>|$)/g, '').substr(0, charLim)}
                   </p>
                   <div className="random-post-info">
                     <div className="random-post-author" id="random-post-author">
                       <a
-                        href={this.randomPostTree && 'u/' + this.randomPostTree.user().data.attributes.slug}>{this.randomPostTree && this.randomPostTree.user().displayName()}</a> in
-                      the <a href={this.randomPostTree && 'd/' + this.randomPostTree.discussion().data.attributes.slug}>
+                        href={this.randomPostTree && 'u/' + this.randomPostTree.user().data.attributes.slug}>{this.randomPostTree && this.randomPostTree.user().displayName()}</a>
+                      {app.translator.trans('justoverclock-random-post.forum.inThe')}
+                      <a href={this.randomPostTree && 'd/' + this.randomPostTree.discussion().data.attributes.slug}>
                       {this.randomPostTree && this.randomPostTree.discussion().data.attributes.title}</a>
                     </div>
                   </div>
